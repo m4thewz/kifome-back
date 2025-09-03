@@ -1,0 +1,23 @@
+{
+  "name": "kifome",
+  "version": "0.0.1",
+  "description": "A website where users can share recipes, receive suggestions, get ratings, and interact through comments.",
+  "homepage": "https://github.com/m4thewz/kifome-back#readme",
+  "bugs": {
+    "url": "https://github.com/m4thewz/kifome-back/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m4thewz/kifome-back.git"
+  },
+  "license": "MIT",
+  "author": "Matheus Pacheco",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
