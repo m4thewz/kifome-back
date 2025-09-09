@@ -1,15 +1,15 @@
-import { Sequelize } from "sequelize";
-import db from "../index.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../index.js";
 
-const Like = db.define("Like",
+const Like = sequelize.define("Like",
   {
     userId: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       references: { model: "users", key: "id" }
     },
     recipeId: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       references: { model: "recipes", key: "id" }
     }

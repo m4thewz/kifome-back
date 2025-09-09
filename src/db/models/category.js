@@ -1,10 +1,10 @@
-import { Sequelize } from "sequelize";
-import db from "../index.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../index.js";
 
-const Category = db.define("Category",
+const Category = sequelize.define("Category",
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: Sequelize.STRING, allowNull: false, unique: true }
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true }
   },
   {
     tableName: "categories",

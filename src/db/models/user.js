@@ -1,14 +1,14 @@
-import { Sequelize } from "sequelize";
-import db from "../index.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../index.js";
 
-const User = db.define("User", 
+const User = sequelize.define("User", 
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: Sequelize.STRING, allowNull: true },
-    username: { type: Sequelize.STRING, allowNull: false, unique: true },
-    email: { type: Sequelize.STRING, allowNull: false, unique: true },
-    password: { type: Sequelize.STRING, allowNull: false },
-    avatarUrl: { type: Sequelize.STRING, allowNull: true }
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: true },
+    username: { type: DataTypes.STRING, allowNull: false, unique: true },
+    email: { type: DataTypes.STRING, allowNull: false, unique: true },
+    password: { type: DataTypes.STRING, allowNull: false },
+    avatarUrl: { type: DataTypes.STRING, allowNull: true }
   },
   {
     tableName: "users",

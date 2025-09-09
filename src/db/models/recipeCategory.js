@@ -1,15 +1,15 @@
-import { Sequelize } from "sequelize";
-import db from "../index.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../index.js";
 
-const RecipeCategory = db.define("RecipeCategory",
+const RecipeCategory = sequelize.define("RecipeCategory",
   {
     recipeId: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       references: { model: "recipes", key: "id" }
     },
     categoryId: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       references: { model: "categories", key: "id" }
     }

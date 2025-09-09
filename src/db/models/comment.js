@@ -1,12 +1,12 @@
-import { Sequelize } from "sequelize";
-import db from "../index.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../index.js";
 
-const Comment = db.define("Comment",
+const Comment = sequelize.define("Comment",
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    content: { type: Sequelize.TEXT, allowNull: false },
-    recipeId: { type: Sequelize.INTEGER, allowNull: false },
-    authorId: { type: Sequelize.INTEGER, allowNull: false }
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    content: { type: DataTypes.TEXT, allowNull: false },
+    recipeId: { type: DataTypes.INTEGER, allowNull: false },
+    authorId: { type: DataTypes.INTEGER, allowNull: false }
   },
   {
     tableName: "comments",

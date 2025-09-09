@@ -1,15 +1,15 @@
-import { Sequelize } from "sequelize";
-import db from "../index.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../index.js";
 
-const Recipe = db.define("Recipe",
+const Recipe = sequelize.define("Recipe",
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    title: { type: Sequelize.STRING, allowNull: false },
-    description: { type: Sequelize.TEXT, allowNull: true },
-    preparation: { type: Sequelize.TEXT, allowNull: false },
-    portions: { type: Sequelize.INTEGER, allowNull: true },
-    prepTime: { type: Sequelize.INTEGER, allowNull: true },
-    authorId: { type: Sequelize.INTEGER, allowNull: false }
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    title: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.TEXT, allowNull: true },
+    preparation: { type: DataTypes.TEXT, allowNull: false },
+    portions: { type: DataTypes.INTEGER, allowNull: true },
+    prepTime: { type: DataTypes.INTEGER, allowNull: true },
+    authorId: { type: DataTypes.INTEGER, allowNull: false }
   },
   {
     tableName: "recipes",
