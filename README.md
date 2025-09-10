@@ -6,6 +6,7 @@
 USERS
  ├─ POST /users/register
  ├─ POST /users/login
+ ├─ GET /users/logout
  ├─ GET /users/me
  ├─ PUT /users/me
  ├─ GET /users/:id
@@ -24,15 +25,13 @@ COMMENTS
  ├─ PUT /comments/:id
  └─ DELETE /comments/:id
 
-RATINGS / LIKES
+LIKES
  ├─ POST /recipes/:id/like
  ├─ DELETE /recipes/:id/like
  ├─ POST /recipes/:id/rate
  └─ GET /recipes/:id/rating
 
-CATEGORIES / TAGS
+CATEGORIES
  ├─ GET /categories
  ├─ GET /categories/:id
- ├─ GET /tags
- └─ GET /tags/:id
 ```
