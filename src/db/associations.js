@@ -1,8 +1,8 @@
 import { User, Recipe, Ingredient, RecipeIngredient, Comment, Like, Category, RecipeCategory } from "./models/index.js";
 
 function applyAssociations() {
-  User.hasMany(Recipe, {foreignKey: "authorId", as: "recipes"});
-  User.hasMany(Comment, {foreignKey: "authorId", as: "comments"});
+  User.hasMany(Recipe, {foreignKey: "authorUsername", sourceKey: "username", as: "recipes"});
+  User.hasMany(Comment, {foreignKey: "authorUsername", sourceKey: "username", as: "comments"});
   User.belongsToMany(Recipe, {
     through: Like,
     foreignKey: "userId",
@@ -10,7 +10,7 @@ function applyAssociations() {
     as: "likedRecipes"
   });
 
-  Recipe.belongsTo(User, { foreignKey: "authorId", as: "author" });
+  Recipe.belongsTo(User, { foreignKey: "authorUsername", targetKey: "username", as: "author" });
   Recipe.hasMany(Comment, { foreignKey: "recipeId", as: "comments" });
   Recipe.belongsToMany(Ingredient, {
     through: RecipeIngredient,
@@ -42,7 +42,7 @@ function applyAssociations() {
   RecipeIngredient.belongsTo(Ingredient, { foreignKey: "ingredientId" });
 
   Comment.belongsTo(Recipe, { foreignKey: "recipeId" });
-  Comment.belongsTo(User, { foreignKey: "authorId", as: "author" });
+  Comment.belongsTo(User, { foreignKey: "authorUsername", targetKey: "username", as: "author" });
 
   Like.belongsTo(User, { foreignKey: "userId" });
   Like.belongsTo(Recipe, { foreignKey: "recipeId" });

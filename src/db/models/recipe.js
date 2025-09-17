@@ -9,7 +9,7 @@ const Recipe = sequelize.define("Recipe",
     preparation: { type: DataTypes.TEXT, allowNull: false },
     portions: { type: DataTypes.INTEGER, allowNull: true },
     prepTime: { type: DataTypes.INTEGER, allowNull: true },
-    authorId: { type: DataTypes.INTEGER, allowNull: false }
+    authorUsername: { type: DataTypes.STRING, allowNull: false }
   },
   {
     tableName: "recipes",
