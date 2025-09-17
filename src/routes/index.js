@@ -7,6 +7,7 @@ router
     res.send("API")
   })
   .post("/users/register", userController.register)
+  .post("/users/login", userController.login)
   .get("/users", userController.getAll)
   .get("/users/:id", userController.getById)
   .put("/users/:id", userController.update)
