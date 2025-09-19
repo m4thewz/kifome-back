@@ -21,8 +21,7 @@ async function register(req, res) {
   }
 
   try {
-    const author = await User.findByPk(req.userID, { attributes: ["username"] })
-    body["authorUsername"] = author.username
+    body["authorUsername"] = req.user.username
 
     const recipe = await Recipe.create(body)
     return res.status(201).json(recipe)
@@ -74,8 +73,7 @@ async function update(req, res) {
       return res.status(404).json({ error: "Recipe not found" });
     }
 
-    const loggedUser = await User.findByPk(req.userID, { attributes: ["username"] })
-    if (recipe.authorUsername != loggedUser.username) {
+    if (recipe.authorUsername != req.user.username) {
       return res.status(403).json({ error: "Unauthorized" })
     }
 
@@ -94,8 +92,7 @@ async function remove(req, res) {
     const recipe = await Recipe.findByPk(id)
     if (!recipe) return res.status(404).json({ error: "Recipe not found" })
 
-    const loggedUser = await User.findByPk(req.userID, { attributes: ["username"] })
-    if (recipe.authorUsername != loggedUser.username) {
+    if (recipe.authorUsername != req.user.username) {
       return res.status(403).json({ error: "Unauthorized" })
     }
 

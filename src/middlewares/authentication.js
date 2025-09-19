@@ -15,7 +15,7 @@ function authenticateToken(req, res, next) {
 
     const user = await User.findByPk(decoded?.userID);
     if (!user) return res.status(403).json({ error: "Unauthorized" });
-    req.userID = decoded.userID;
+    req.user = { id: user.id, username: user.username };
 
     next();
   });
