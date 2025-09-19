@@ -7,7 +7,11 @@ const Recipe = sequelize.define("Recipe",
     title: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: true },
     preparation: { type: DataTypes.TEXT, allowNull: false },
-    portions: { type: DataTypes.INTEGER, allowNull: true },
+    portionQuantity: { type: DataTypes.INTEGER, allowNull: true },
+    portionUnity: {
+      type: DataTypes.ENUM("serving", "slice", "unit", "cup", "bowl"),
+      allowNull: false
+    },
     prepTime: { type: DataTypes.INTEGER, allowNull: true },
     authorUsername: { type: DataTypes.STRING, allowNull: false }
   },

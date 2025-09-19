@@ -14,7 +14,10 @@ const RecipeIngredient = sequelize.define("RecipeIngredient",
       references: { model: "ingredients", key: "id" }
     },
     quantity: { type: DataTypes.INTEGER, allowNull: true },
-    unit: { type: DataTypes.STRING, allowNull: true }
+    unit: { 
+      type: DataTypes.ENUM("kg", "g", "l", "ml", "cup", "tablespoon", "teaspoon", "pinch", "slice", "unit"),
+      allowNull: true
+    }
   },
   {
     tableName: "recipe_ingredients",
