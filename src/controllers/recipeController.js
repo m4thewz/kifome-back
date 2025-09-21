@@ -1,29 +1,69 @@
-import Recipe from "../db/models/recipe.js";
-import User from "../db/models/user.js";
+import sequelize from "../db/index.js"
+import { Recipe, Ingredient, Category, RecipeIngredient, RecipeCategory } from "../db/models/index.js"
+import normalizeText from "../utils/normalizeText.js"
 import Joi from  "joi";
 
 const recipeSchema = Joi.object({
-  title: Joi.string().max(100).required(),
-  description: Joi.string().max(500),
-  preparation: Joi.string().required(),
-  portions: Joi.number().integer(),
+  title: Joi.string().min(1).max(100).required(),
+  description: Joi.string().min(1).max(500),
+  preparation: Joi.string().min(1).required(),
+  portionQuantity: Joi.number().integer().min(1),
+  portionUnity: Joi.string().valid("serving", "slice", "unit", "cup", "bowl"),
   prepTime: Joi.number(),
+  ingredients: Joi.array().items(Joi.object({
+    name: Joi.string().required(),
+    quantity: Joi.string().required(),
+    unit: Joi.string().valid("unit", "kg", "g", "l", "ml", "cup", "tablespoon", "teaspoon", "pinch", "slice").default("unit")
+  })).required(),
+  categories: Joi.array().items(Joi.string().min(1))
 })
 
 async function register(req, res) {
-  const { title, description, preparation, portions, prepTime } = req.body
-  const body = { title, description, preparation, portions, prepTime }
-  const validationResult = recipeSchema.validate(body)
+  const { title, description, preparation, portionQuantity, portionUnity, prepTime, ingredients, categories } = req.body
+  const validationResult = recipeSchema.validate({ title, description, preparation, portionQuantity, portionUnity, prepTime, ingredients, categories })
 
   if (validationResult.error) {
     console.error("Validation error:", validationResult.error.message)
     return res.status(400).json({ error: validationResult.error.message })
   }
 
+  const t = await sequelize.transaction()
   try {
-    body["authorUsername"] = req.user.username
+    const authorUsername = req.user.username
 
-    const recipe = await Recipe.create(body)
+    const recipe = await Recipe.create(
+      { title, description, preparation, portionQuantity, portionUnity, prepTime, authorUsername },
+      { transaction: t }
+    )
+
+    for (const ing of ingredients) {
+      const normalizedIngredientName = normalizeText(ing.name)
+      const [ingredient] = await Ingredient.findOrCreate({
+        where: { name: normalizedIngredientName },
+        defaults: { name: normalizedIngredientName, displayName: ing.name },
+        transaction: t
+      })
+      await RecipeIngredient.create(
+        { recipeId: recipe.id, ingredientId: ingredient.id, quantity: ing.quantity, unit: ing.unit },
+        { transaction: t }
+      )
+    }
+
+    for (const cat of categories) {
+      const normalizedCategoryName = normalizeText(cat)
+      const [category] = await Category.findOrCreate({
+        where: { name: normalizedCategoryName },
+        defaults: { name: normalizedCategoryName, displayName: cat },
+        transaction: t
+      })
+      await RecipeCategory.create(
+        { recipeId: recipe.id, categoryId: category.id },
+        { transaction: t }
+      )
+    }
+
+    await t.commit()
+
     return res.status(201).json(recipe)
   } catch (err) {
     console.error(err)
@@ -33,7 +73,22 @@ async function register(req, res) {
 
 async function getAll(_, res) {
   try {
-    const recipes = await Recipe.findAll()
+    const recipes = await Recipe.findAll({
+      include: [
+        {
+          model: Ingredient,
+          as: "ingredients",
+          through: { attributes: ["quantity", "unit"]},
+          attributes: ["name", "displayName"]
+        },
+        {
+          model: Category,
+          as: "categories",
+          attributes: ["name", "displayName"],
+          through: { attributes: [] }
+        }
+      ]
+    })
     return res.status(200).json(recipes)
   } catch (err) {
     console.error(err)
@@ -44,7 +99,21 @@ async function getAll(_, res) {
 async function getById(req, res) {
   try {
     const { id } = req.params;
-    const recipe = await Recipe.findByPk(id);
+    const recipe = await Recipe.findByPk(id, {
+      include: [
+        {
+          model: Ingredient,
+          as: "ingredients",
+          through: { attributes: ["quantity", "unit"]},
+          attributes: ["name", "displayName"]
+        },
+        {
+          model: Category,
+          as: "categories",
+          attributes: ["name", "displayName"]
+        }
+      ]
+    });
 
     if (!recipe) {
       return res.status(404).json({ error: "Recipe not found" });
