@@ -15,7 +15,7 @@ const recipeSchema = Joi.object({
     quantity: Joi.string().required(),
     unit: Joi.string().valid("unit", "kg", "g", "l", "ml", "cup", "tablespoon", "teaspoon", "pinch", "slice").default("unit")
   })).required(),
-  categories: Joi.array().items(Joi.string().min(1))
+  categories: Joi.array().items(Joi.string().min(1)).required()
 })
 
 async function register(req, res) {
@@ -128,16 +128,22 @@ async function getById(req, res) {
 
 async function update(req, res) {
   const { id } = req.params;
-  const { title, description, preparation, portions, prepTime } = req.body
-  const body = { title, description, preparation, portions, prepTime }
-  const validationResult = recipeSchema.validate(body)
+  const { title, description, preparation, portionQuantity, portionUnity, prepTime, ingredients, categories  } = req.body
+  const validationResult = recipeSchema.validate({ title, description, preparation, portionQuantity, portionUnity, prepTime, ingredients, categories  })
 
   if (validationResult.error) {
     console.error("Validation error: ", validationResult.error.message)
     return res.status(400).json({ error: validationResult.error.message })
   }
+
+  const t = await sequelize.transaction()
   try {
-    const recipe = await Recipe.findByPk(id);
+    const recipe = await Recipe.findByPk(id, {
+      include: [
+        { model: Ingredient, as: "ingredients", through: { attributes: ["quantity", "unit"] } },
+        { model: Category, as: "categories" }
+      ],
+    });
     if (!recipe) {
       return res.status(404).json({ error: "Recipe not found" });
     }
@@ -146,9 +152,67 @@ async function update(req, res) {
       return res.status(403).json({ error: "Unauthorized" })
     }
 
-    await recipe.update(body);
+    await recipe.update({ title, description, preparation, portionQuantity, portionUnity, prepTime }, { transaction: t });
+
+    const currentIngredients = recipe.ingredients
+    const newIngredients = ingredients.map(ing => ({
+      name: normalizeText(ing.name),
+      displayName: ing.name,
+      quantity: ing.quantity,
+      unit: ing.unit
+    }))
+    const newIngredientsNames = newIngredients.map(ing => ing.name)
+
+    for (const currentIng of currentIngredients) {
+      if (!newIngredientsNames.includes(currentIng.name)) {
+        await RecipeIngredient.destroy({
+          where: { recipeId: recipe.id, ingredientId: currentIng.id },
+          transaction: t
+        })
+      }
+    }
+
+    for (const ing of newIngredients) {
+      const [ingredient] = await Ingredient.findOrCreate({
+        where: { name: ing.name },
+        defaults: { name: ing.name, displayName: ing.displayName },
+        transaction: t
+      })
+      await RecipeIngredient.upsert(
+        { recipeId: recipe.id, ingredientId: ingredient.id, quantity: ing.quantity, unit: ing.unit },
+        { transaction: t }
+      )
+    }
+
+    const newCategories = categories.map(cat => normalizeText(cat))
+
+    for (const currentCat of recipe.categories) {
+      if (!newCategories.includes(currentCat.name)) {
+        const category = await Category.findOne({ where: { name: currentCat.name }, transaction: t })
+        await RecipeCategory.destroy({ where: { recipeId: recipe.id, categoryId: category.id }, transaction: t })
+      }
+    }
+
+    if (categories.length > 0) {
+      for (const cat of categories) {
+        const normalizedCategoryName = normalizeText(cat)
+        const [category] = await Category.findOrCreate({
+          where: { name: normalizedCategoryName },
+          defaults: { name: normalizedCategoryName, displayName: cat },
+          transaction: t
+        })
+        await RecipeCategory.findOrCreate({
+          where: { recipeId: recipe.id, categoryId: category.id },
+          transaction: t
+        })
+      }
+    }
+
+    await t.commit()
+
     return res.json(recipe);
   } catch (err) {
+    await t.rollback()
     console.error(err);
     return res.status(500).json({ error: "Error updating recipe" });
   }
