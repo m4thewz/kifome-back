@@ -1,23 +1,24 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../index.js";
 
-const RecipeCategory = sequelize.define("RecipeCategory",
+const RecipeCategory = sequelize.define(
+  "RecipeCategory",
   {
     recipeId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      references: { model: "recipes", key: "id" }
+      references: { model: "recipes", key: "id" },
     },
     categoryId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      references: { model: "categories", key: "id" }
-    }
+      references: { model: "categories", key: "id" },
+    },
   },
   {
     tableName: "recipe_categories",
-    timestamps: false
-  }
+    timestamps: false,
+  },
 );
 
 export default RecipeCategory;

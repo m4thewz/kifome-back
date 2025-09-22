@@ -1,28 +1,29 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../index.js";
 
-const RecipeIngredient = sequelize.define("RecipeIngredient", 
+const RecipeIngredient = sequelize.define(
+  "RecipeIngredient",
   {
     recipeId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      references: { model: "recipes", key: "id" }
+      references: { model: "recipes", key: "id" },
     },
     ingredientId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      references: { model: "ingredients", key: "id" }
+      references: { model: "ingredients", key: "id" },
     },
     quantity: { type: DataTypes.STRING, allowNull: true },
-    unit: { 
+    unit: {
       type: DataTypes.ENUM("unit", "kg", "g", "l", "ml", "cup", "tablespoon", "teaspoon", "pinch", "slice"),
-      allowNull: true
-    }
+      allowNull: true,
+    },
   },
   {
     tableName: "recipe_ingredients",
-    timestamps: false
-  }
+    timestamps: false,
+  },
 );
 
 export default RecipeIngredient;

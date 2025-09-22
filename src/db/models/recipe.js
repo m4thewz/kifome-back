@@ -1,7 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../index.js";
 
-const Recipe = sequelize.define("Recipe",
+const Recipe = sequelize.define(
+  "Recipe",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: { type: DataTypes.STRING, allowNull: false },
@@ -10,15 +11,15 @@ const Recipe = sequelize.define("Recipe",
     portionQuantity: { type: DataTypes.INTEGER, allowNull: true },
     portionUnity: {
       type: DataTypes.ENUM("serving", "slice", "unit", "cup", "bowl"),
-      allowNull: true
+      allowNull: true,
     },
     prepTime: { type: DataTypes.INTEGER, allowNull: true },
-    authorUsername: { type: DataTypes.STRING, allowNull: false }
+    authorUsername: { type: DataTypes.STRING, allowNull: false },
   },
   {
     tableName: "recipes",
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 export default Recipe;

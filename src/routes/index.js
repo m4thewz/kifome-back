@@ -1,12 +1,12 @@
 import { Router } from "express";
 const router = Router();
-import userController from "../controllers/userController.js"
-import recipeController from "../controllers/recipeController.js"
-import { authenticateToken } from "../middlewares/authentication.js"
+import userController from "../controllers/userController.js";
+import recipeController from "../controllers/recipeController.js";
+import { authenticateToken } from "../middlewares/authentication.js";
 
 router
   .get("/", (_, res) => {
-    res.send("API")
+    res.send("API");
   })
   .post("/users/register", userController.register)
   .post("/users/login", userController.login)
@@ -18,6 +18,6 @@ router
   .get("/recipes", recipeController.getAll)
   .get("/recipes/:id", recipeController.getById)
   .put("/recipes/:id", authenticateToken, recipeController.update)
-  .delete("/recipes/:id", authenticateToken, recipeController.remove)
+  .delete("/recipes/:id", authenticateToken, recipeController.remove);
 
 export default router;

@@ -7,7 +7,7 @@ const userSchema = Joi.object({
   name: Joi.string().max(100).allow(null, ""),
   username: Joi.string().alphanum().min(3).max(30).required(),
   email: Joi.string().email({ minDomainSegments: 2 }).required(),
-  password: Joi.string().min(8).max(255).required()
+  password: Joi.string().min(8).max(255).required(),
 });
 
 async function register(req, res) {
@@ -15,8 +15,8 @@ async function register(req, res) {
   const validationResult = userSchema.validate({ name, username, email, password });
 
   if (validationResult.error) {
-    console.error("Validation error:", validationResult.error.message)
-    return res.status(400).json({ error: validationResult.error.message })
+    console.error("Validation error:", validationResult.error.message);
+    return res.status(400).json({ error: validationResult.error.message });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,24 +27,27 @@ async function register(req, res) {
     console.error(err);
 
     if (err.name == "SequelizeUniqueConstraintError") {
-      return res.status(409).json({ error: "Email or username already exists "});
+      return res.status(409).json({ error: "Email or username already exists " });
     }
     return res.status(400).json({ error: "Error creating user" });
   }
-};
+}
 
 // TODO: implement username login
 async function login(req, res) {
   const { email, password } = req.body;
-  const userPartialSchema = Joi.object({ email: userSchema.extract("email"), password: userSchema.extract("password") })
+  const userPartialSchema = Joi.object({
+    email: userSchema.extract("email"),
+    password: userSchema.extract("password"),
+  });
   const validationResult = userPartialSchema.validate({ email, password });
 
   if (validationResult.error) {
     console.log("Validation error: ", validationResult.error.message);
     return res.status(400).json({ error: validationResult.error.message });
-  };
+  }
 
-  const user = await User.findOne({ where: { email }});
+  const user = await User.findOne({ where: { email } });
   if (!user) return res.status(404).json({ error: "User not found" });
 
   const correctPassword = await bcrypt.compare(password, user.password);
@@ -59,15 +62,15 @@ async function getAll(_, res) {
   try {
     const users = await User.findAll({
       attributes: {
-        exclude: ["id", "password"]
-      }
+        exclude: ["id", "password"],
+      },
     });
     return res.status(200).json(users);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Error searching users" });
   }
-};
+}
 
 async function getById(req, res) {
   try {
@@ -83,18 +86,18 @@ async function getById(req, res) {
     console.error(err);
     return res.status(500).json({ error: "Error finding user" });
   }
-};
+}
 
 async function update(req, res) {
-    const { id } = req.params;
-    const { name, username } = req.body;
-    const userPartialSchema = Joi.object({ name: userSchema.extract("name"), username: userSchema.extract("username") })
-    const validationResult = userPartialSchema.validate({ name, username })
+  const { id } = req.params;
+  const { name, username } = req.body;
+  const userPartialSchema = Joi.object({ name: userSchema.extract("name"), username: userSchema.extract("username") });
+  const validationResult = userPartialSchema.validate({ name, username });
 
-    if (validationResult.error) {
-      console.error("Validation error: ", validationResult.error.message)
-      return res.status(400).json({ error: validationResult.error.message })
-    }
+  if (validationResult.error) {
+    console.error("Validation error: ", validationResult.error.message);
+    return res.status(400).json({ error: validationResult.error.message });
+  }
 
   try {
     const user = await User.findByPk(id);
@@ -108,7 +111,7 @@ async function update(req, res) {
     console.error(err);
     return res.status(500).json({ error: "Error updating user" });
   }
-};
+}
 
 async function remove(req, res) {
   try {
@@ -125,6 +128,6 @@ async function remove(req, res) {
     console.error(err);
     return res.status(500).json({ error: "Error deleting user" });
   }
-};
+}
 
 export default { register, login, getAll, getById, update, remove };
