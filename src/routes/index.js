@@ -2,6 +2,7 @@ import { Router } from "express";
 const router = Router();
 import userController from "../controllers/userController.js";
 import recipeController from "../controllers/recipeController.js";
+import interactionController from "../controllers/interactionController.js";
 import { authenticateToken } from "../middlewares/authentication.js";
 
 router
@@ -18,6 +19,10 @@ router
   .get("/recipes", recipeController.getAll)
   .get("/recipes/:id", recipeController.getById)
   .put("/recipes/:id", authenticateToken, recipeController.update)
-  .delete("/recipes/:id", authenticateToken, recipeController.remove);
+  .delete("/recipes/:id", authenticateToken, recipeController.remove)
+  .post("/recipes/:id/comment", authenticateToken, interactionController.registerComment)
+  .delete("/recipes/comment/:id", authenticateToken, interactionController.removeComment)
+  .post("/recipes/:id/like", authenticateToken, interactionController.registerLike)
+  .delete("/recipes/:id/like", authenticateToken, interactionController.removeLike);
 
 export default router;

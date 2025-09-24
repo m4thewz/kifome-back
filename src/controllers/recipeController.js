@@ -1,5 +1,5 @@
 import sequelize from "../db/index.js";
-import { Recipe, Ingredient, Category, RecipeIngredient, RecipeCategory } from "../db/models/index.js";
+import { Recipe, Ingredient, Category, RecipeIngredient, RecipeCategory, User, Comment } from "../db/models/index.js";
 import normalizeText from "../utils/normalizeText.js";
 import Joi from "joi";
 
@@ -100,6 +100,24 @@ async function getAll(_, res) {
           attributes: ["name", "displayName"],
           through: { attributes: [] },
         },
+        {
+          model: Comment,
+          as: "comments",
+          attributes: ["content"],
+          include: [
+            {
+              model: User,
+              as: "author",
+              attributes: ["username"],
+            },
+          ],
+        },
+        {
+          model: User,
+          as: "likedBy",
+          attributes: ["username"],
+          through: { attributes: [] },
+        },
       ],
     });
     return res.status(200).json(recipes);
@@ -124,6 +142,24 @@ async function getById(req, res) {
           model: Category,
           as: "categories",
           attributes: ["name", "displayName"],
+        },
+        {
+          model: Comment,
+          as: "comments",
+          attributes: ["content"],
+          include: [
+            {
+              model: User,
+              as: "author",
+              attributes: ["username"],
+            },
+          ],
+        },
+        {
+          model: User,
+          as: "likedBy",
+          attributes: ["username"],
+          through: { attributes: [] },
         },
       ],
     });

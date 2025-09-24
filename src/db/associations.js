@@ -42,7 +42,7 @@ function applyAssociations() {
   RecipeIngredient.belongsTo(Ingredient, { foreignKey: "ingredientId" });
 
   Comment.belongsTo(Recipe, { foreignKey: "recipeId" });
-  Comment.belongsTo(User, { foreignKey: "authorUsername", targetKey: "username", as: "author" });
+  Comment.belongsTo(User, { foreignKey: "authorId", as: "author" });
 
   Like.belongsTo(User, { foreignKey: "userId" });
   Like.belongsTo(Recipe, { foreignKey: "recipeId" });
