@@ -45,10 +45,10 @@ async function register(req, res) {
 
   const t = await sequelize.transaction();
   try {
-    const authorUsername = req.user.username;
+    const authorId = req.user.id;
 
     const recipe = await Recipe.create(
-      { title, description, preparation, portionQuantity, portionUnity, prepTime, authorUsername },
+      { title, description, preparation, portionQuantity, portionUnity, prepTime, authorId },
       { transaction: t },
     );
 
@@ -87,7 +87,13 @@ async function register(req, res) {
 async function getAll(_, res) {
   try {
     const recipes = await Recipe.findAll({
+      attributes: { exclude: ["authorId"] },
       include: [
+        {
+          model: User,
+          as: "author",
+          attributes: ["name", "username"],
+        },
         {
           model: Ingredient,
           as: "ingredients",
@@ -131,7 +137,13 @@ async function getById(req, res) {
   try {
     const { id } = req.params;
     const recipe = await Recipe.findByPk(id, {
+      attributes: { exclude: ["authorId"] },
       include: [
+        {
+          model: User,
+          as: "author",
+          attributes: ["name", "username"],
+        },
         {
           model: Ingredient,
           as: "ingredients",
@@ -207,7 +219,7 @@ async function update(req, res) {
       return res.status(404).json({ error: "Recipe not found" });
     }
 
-    if (recipe.authorUsername != req.user.username) {
+    if (recipe.authorId != req.user.id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -286,7 +298,7 @@ async function remove(req, res) {
     const recipe = await Recipe.findByPk(id);
     if (!recipe) return res.status(404).json({ error: "Recipe not found" });
 
-    if (recipe.authorUsername != req.user.username) {
+    if (recipe.authorId != req.user.id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 

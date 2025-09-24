@@ -14,7 +14,7 @@ const Recipe = sequelize.define(
       allowNull: true,
     },
     prepTime: { type: DataTypes.INTEGER, allowNull: true },
-    authorUsername: { type: DataTypes.STRING, allowNull: false },
+    authorId: { type: DataTypes.INTEGER, allowNull: false },
   },
   {
     tableName: "recipes",
