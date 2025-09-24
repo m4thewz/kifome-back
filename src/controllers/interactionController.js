@@ -27,6 +27,30 @@ async function registerComment(req, res) {
   }
 }
 
+async function updateComment(req, res) {
+  const { id } = req.params
+  const { content } = req.body
+  const validationResult = commentSchema.validate(content)
+
+  if (validationResult.error) {
+    console.error("Validation error: ", validationResult.error.message);
+    return res.status(400).json({ error: validationResult.error.message });
+  }
+  try {
+    const comment = await Comment.findByPk(id)
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    await comment.update({ content }).then((updatedComment) => {
+      return res.status(200).json(updatedComment);
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Error updating comment" });
+  }
+}
+
 async function removeComment(req, res) {
   const { id } = req.params;
   const comment = await Comment.findByPk(id);
@@ -84,4 +108,4 @@ async function removeLike(req, res) {
   }
 }
 
-export default { registerComment, removeComment, registerLike, removeLike };
+export default { registerComment, updateComment, removeComment, registerLike, removeLike };

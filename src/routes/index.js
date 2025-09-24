@@ -20,8 +20,9 @@ router
   .get("/recipes/:id", recipeController.getById)
   .put("/recipes/:id", authenticateToken, recipeController.update)
   .delete("/recipes/:id", authenticateToken, recipeController.remove)
-  .post("/recipes/:id/comment", authenticateToken, interactionController.registerComment)
-  .delete("/recipes/comment/:id", authenticateToken, interactionController.removeComment)
+  .post("/recipes/:id/comments", authenticateToken, interactionController.registerComment)
+  .put("/comments/:id", authenticateToken, interactionController.updateComment)
+  .delete("/comment/:id", authenticateToken, interactionController.removeComment)
   .post("/recipes/:id/like", authenticateToken, interactionController.registerLike)
   .delete("/recipes/:id/like", authenticateToken, interactionController.removeLike);
 

@@ -12,7 +12,7 @@ app.use(express.json());
 app.use("/", routes);
 
 applyAssociations();
-sequelize.sync({ alter: true });
+sequelize.sync();
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
