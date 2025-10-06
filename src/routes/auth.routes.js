@@ -13,7 +13,4 @@ router.post('/login', validateUserLogin, authController.login);
 // GET /api/auth/me
 router.get('/me', authenticate, authController.getMe);
 
-// DELETE /api/auth/me
-router.delete('/me', authenticate, authController.deleteMe);
-
 export default router;

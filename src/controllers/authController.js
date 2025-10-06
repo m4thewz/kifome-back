@@ -62,13 +62,4 @@ const getMe = asyncHandler(async (req, res) => {
   });
 });
 
-const deleteMe = asyncHandler(async (req, res) => {
-  await req.user.destroy();
-
-  res.json({
-    success: true,
-    message: 'Deleted user successfully'
-  });
-});
-
-export default { register, login, getMe, deleteMe };
+export default { register, login, getMe };
