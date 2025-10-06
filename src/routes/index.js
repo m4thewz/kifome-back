@@ -1,29 +1,24 @@
-import { Router } from "express";
+import { Router } from 'express';
 const router = Router();
-import userController from "../controllers/userController.js";
-import recipeController from "../controllers/recipeController.js";
-import interactionController from "../controllers/interactionController.js";
-import { authenticateToken } from "../middlewares/authentication.js";
 
-router
-  .get("/", (_, res) => {
-    res.send("API");
-  })
-  .post("/users/register", userController.register)
-  .post("/users/login", userController.login)
-  .get("/users", userController.getAll)
-  .get("/users/:id", userController.getById)
-  .put("/users/:id", userController.update)
-  .delete("/users/:id", userController.remove)
-  .post("/recipes/register", authenticateToken, recipeController.register)
-  .get("/recipes", recipeController.getAll)
-  .get("/recipes/:id", recipeController.getById)
-  .put("/recipes/:id", authenticateToken, recipeController.update)
-  .delete("/recipes/:id", authenticateToken, recipeController.remove)
-  .post("/recipes/:id/comments", authenticateToken, interactionController.registerComment)
-  .put("/comments/:id", authenticateToken, interactionController.updateComment)
-  .delete("/comment/:id", authenticateToken, interactionController.removeComment)
-  .post("/recipes/:id/like", authenticateToken, interactionController.registerLike)
-  .delete("/recipes/:id/like", authenticateToken, interactionController.removeLike);
+import authRoutes from './auth.routes.js';
+import userRoutes from './user.routes.js';
+import recipeRoutes from './recipe.routes.js';
+import commentRoutes from './comment.routes.js';
+import categoryRoutes from './category.routes.js';
+
+router.use('/auth', authRoutes);
+router.use('/users', userRoutes);
+router.use('/recipes', recipeRoutes);
+router.use('/comments', commentRoutes);
+router.use('/categories', categoryRoutes);
+
+router.get('/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'KiFome API working!',
+    timestamp: new Date().toISOString()
+  });
+});
 
 export default router;
