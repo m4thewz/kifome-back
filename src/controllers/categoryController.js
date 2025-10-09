@@ -64,11 +64,12 @@ export const getById = asyncHandler(async (req, res) => {
     order: [['createdAt', 'DESC']],
     distinct: true
   });
-  category.recipes = recipes;
+  const categoryJson = category.toJSON();
+  categoryJson.recipes = recipes;
 
   res.json({
     success: true,
-    data: category,
+    data: categoryJson,
     pagination: {
       page,
       limit,
@@ -77,4 +78,3 @@ export const getById = asyncHandler(async (req, res) => {
     }
   });
 });
-
