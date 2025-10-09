@@ -1,6 +1,6 @@
-import sequelize from '../database.js';
-import { Like, Recipe, Rating } from '../models/index.js';
-import asyncHandler from '../utils/asyncHandler.js';
+import sequelize from '../../db/index.js';
+import { Like, Recipe, Rating } from '../../db/models.js';
+import asyncHandler from '../../utils/asyncHandler.js';
 
 export const like = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
@@ -33,7 +33,7 @@ export const like = asyncHandler(async (req, res) => {
     message: 'Liked recipe successfully',
     data: {
       recipeId: recipe.id,
-      likes: recipe.likesCount + 1,
+      likes: recipe.likesCount + 1
     }
   });
 });
@@ -63,7 +63,7 @@ export const unlike = asyncHandler(async (req, res) => {
     message: 'Removed like successfully',
     data: {
       recipeId: recipe.id,
-      likes: Math.max(0, recipe.likesCount - 1),
+      likes: Math.max(0, recipe.likesCount - 1)
     }
   });
 });
@@ -143,4 +143,3 @@ export const getRating = asyncHandler(async (req, res) => {
     }
   });
 });
-

@@ -1,5 +1,5 @@
-import { User, Recipe, Category } from '../models/index.js';
-import asyncHandler from '../utils/asyncHandler.js';
+import { User, Recipe, Category } from '../../db/models.js';
+import asyncHandler from '../../utils/asyncHandler.js';
 
 export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.params.id, {
@@ -83,4 +83,3 @@ export const deleteAccount = asyncHandler(async (req, res) => {
     message: 'Deleted user successfully'
   });
 });
-

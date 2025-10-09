@@ -1,5 +1,5 @@
-import { Comment, User, Recipe } from '../models/index.js';
-import asyncHandler from '../utils/asyncHandler.js';
+import { Comment, User, Recipe } from '../../db/models.js';
+import asyncHandler from '../../utils/asyncHandler.js';
 
 export const create = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
@@ -88,6 +88,7 @@ export const getById = asyncHandler(async (req, res) => {
       },
       {
         model: Recipe,
+        as: 'recipe',
         attributes: ['id', 'title']
       }
     ]
@@ -126,4 +127,3 @@ export const remove = asyncHandler(async (req, res) => {
     message: 'Deleted comment successfully'
   });
 });
-

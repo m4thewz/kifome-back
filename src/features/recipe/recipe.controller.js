@@ -1,4 +1,4 @@
-import sequelize from '../database.js';
+import sequelize from '../../db/index.js';
 import { Op } from 'sequelize';
 import {
   Recipe,
@@ -8,9 +8,9 @@ import {
   RecipeCategory,
   User,
   Comment
-} from '../models/index.js';
-import normalizeText from '../utils/normalizeText.js';
-import asyncHandler from '../utils/asyncHandler.js';
+} from '../../db/models.js';
+import normalizeText from '../../utils/normalizeText.js';
+import asyncHandler from '../../utils/asyncHandler.js';
 
 export const getAll = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -386,4 +386,3 @@ export const remove = asyncHandler(async (req, res) => {
     message: 'Deleted recipe successfully'
   });
 });
-

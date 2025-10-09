@@ -1,12 +1,12 @@
-import User from './user.js';
-import Recipe from './recipe.js';
-import Ingredient from './ingredient.js';
-import RecipeIngredient from './recipeIngredient.js';
-import Comment from './comment.js';
-import Like from './like.js';
-import Rating from './rating.js';
-import Category from './category.js';
-import RecipeCategory from './recipeCategory.js';
+import User from '../features/user/user.model.js';
+import Recipe from '../features/recipe/recipe.model.js';
+import Ingredient from '../features/recipe/ingredient.model.js';
+import RecipeIngredient from '../features/recipe/recipeIngredient.model.js';
+import Comment from '../features/comment/comment.model.js';
+import Like from '../features/like/like.model.js';
+import Rating from '../features/like/rating.model.js';
+import Category from '../features/category/category.model.js';
+import RecipeCategory from '../features/category/recipeCategory.model.js';
 
 // user associations
 User.hasMany(Recipe, { foreignKey: 'authorId', as: 'recipes' });

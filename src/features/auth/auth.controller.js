@@ -1,6 +1,6 @@
-import { User } from '../models/index.js';
-import generateToken from '../utils/generateToken.js';
-import asyncHandler from '../utils/asyncHandler.js';
+import { User } from '../../db/models.js';
+import generateToken from '../../utils/generateToken.js';
+import asyncHandler from '../../utils/asyncHandler.js';
 
 export const register = asyncHandler(async (req, res) => {
   const { name, username, bio, avatar, email, password } = req.body;

@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import sequelize from './database.js';
+import sequelize from './db/index.js';
 import routes from './routes/index.js';
 
 import { helmet, cors } from './middlewares/security.js';

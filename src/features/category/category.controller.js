@@ -1,6 +1,6 @@
-import sequelize from '../database.js';
-import { Category, Recipe, User } from '../models/index.js';
-import asyncHandler from '../utils/asyncHandler.js';
+import sequelize from '../../db/index.js';
+import { Category, Recipe, User } from '../../db/models.js';
+import asyncHandler from '../../utils/asyncHandler.js';
 
 export const getAll = asyncHandler(async (req, res) => {
   const categories = await Category.findAll({

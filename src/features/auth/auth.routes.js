@@ -1,8 +1,8 @@
 import { Router } from 'express';
 const router = Router();
-import * as authController from '../controllers/authController.js';
-import { authenticate } from '../middlewares/auth.js';
-import { validateUserRegister, validateUserLogin } from '../middlewares/validation.js';
+import * as authController from './auth.controller.js';
+import { authenticate } from '../../middlewares/auth.js';
+import { validateUserRegister, validateUserLogin } from '../../middlewares/validation.js';
 
 // /api/auth/
 router.post('/register', validateUserRegister, authController.register);

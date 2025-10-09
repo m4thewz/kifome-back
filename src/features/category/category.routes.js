@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
-import * as categoryController from '../controllers/categoryController.js';
-import { validateId } from '../middlewares/validation.js';
+import * as categoryController from './category.controller.js';
+import { validateId } from '../../middlewares/validation.js';
 
 // /api/categories
 router.get('/', categoryController.getAll);

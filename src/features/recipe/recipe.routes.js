@@ -1,16 +1,16 @@
 import { Router } from 'express';
 const router = Router();
-import * as recipeController from '../controllers/recipeController.js';
-import * as commentController from '../controllers/commentController.js';
-import * as likeController from '../controllers/likeController.js';
-import { authenticate } from '../middlewares/auth.js';
-import { checkRecipeOwnership } from '../middlewares/authorization.js';
+import * as recipeController from './recipe.controller.js';
+import * as commentController from '../comment/comment.controller.js';
+import * as likeController from '../like/like.controller.js';
+import { authenticate } from '../../middlewares/auth.js';
+import { checkRecipeOwnership } from '../../middlewares/authorization.js';
 import {
   validateRecipeCreate,
   validateComment,
   validateRating,
   validateId
-} from '../middlewares/validation.js';
+} from '../../middlewares/validation.js';
 
 // /api/recipes
 router.get('/', recipeController.getAll);
