@@ -2,7 +2,7 @@ import { User } from '../models/index.js';
 import generateToken from '../utils/generateToken.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
-const register = asyncHandler(async (req, res) => {
+export const register = asyncHandler(async (req, res) => {
   const { name, username, bio, avatar, email, password } = req.body;
 
   const user = await User.create({
@@ -24,7 +24,7 @@ const register = asyncHandler(async (req, res) => {
   });
 });
 
-const login = asyncHandler(async (req, res) => {
+export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ where: { email } });
@@ -55,11 +55,9 @@ const login = asyncHandler(async (req, res) => {
   });
 });
 
-const getMe = asyncHandler(async (req, res) => {
+export const getMe = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: req.user
   });
 });
-
-export default { register, login, getMe };

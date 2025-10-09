@@ -2,7 +2,7 @@ import sequelize from '../database.js';
 import { Category, Recipe, User } from '../models/index.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
-const getAll = asyncHandler(async (req, res) => {
+export const getAll = asyncHandler(async (req, res) => {
   const categories = await Category.findAll({
     attributes: [
       'id',
@@ -29,7 +29,7 @@ const getAll = asyncHandler(async (req, res) => {
   });
 });
 
-const getById = asyncHandler(async (req, res) => {
+export const getById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
@@ -80,4 +80,3 @@ const getById = asyncHandler(async (req, res) => {
   });
 });
 
-export default { getAll, getById };

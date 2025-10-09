@@ -1,7 +1,7 @@
 import { User, Recipe, Category } from '../models/index.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
-const getUserProfile = asyncHandler(async (req, res) => {
+export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.params.id, {
     attributes: ['id', 'name', 'username', 'bio', 'avatar', 'createdAt']
   });
@@ -19,7 +19,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   });
 });
 
-const getUserRecipes = asyncHandler(async (req, res) => {
+export const getUserRecipes = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
@@ -59,7 +59,7 @@ const getUserRecipes = asyncHandler(async (req, res) => {
   });
 });
 
-const updateProfile = asyncHandler(async (req, res) => {
+export const updateProfile = asyncHandler(async (req, res) => {
   const { name, username, bio, avatar } = req.body;
 
   await req.user.update({
@@ -76,7 +76,7 @@ const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
-const deleteAccount = asyncHandler(async (req, res) => {
+export const deleteAccount = asyncHandler(async (req, res) => {
   await req.user.destroy();
 
   res.json({
@@ -85,4 +85,3 @@ const deleteAccount = asyncHandler(async (req, res) => {
   });
 });
 
-export default { getUserProfile, getUserRecipes, updateProfile, deleteAccount };

@@ -12,7 +12,7 @@ import {
 import normalizeText from '../utils/normalizeText.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
-const getAll = asyncHandler(async (req, res) => {
+export const getAll = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const offset = (page - 1) * limit;
@@ -84,7 +84,7 @@ const getAll = asyncHandler(async (req, res) => {
   });
 });
 
-const getById = asyncHandler(async (req, res) => {
+export const getById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const recipe = await Recipe.findByPk(id, {
@@ -143,7 +143,7 @@ const getById = asyncHandler(async (req, res) => {
   });
 });
 
-const create = asyncHandler(async (req, res) => {
+export const create = asyncHandler(async (req, res) => {
   const {
     title,
     description,
@@ -251,7 +251,7 @@ const create = asyncHandler(async (req, res) => {
   }
 });
 
-const update = asyncHandler(async (req, res) => {
+export const update = asyncHandler(async (req, res) => {
   const {
     title,
     description,
@@ -379,7 +379,7 @@ const update = asyncHandler(async (req, res) => {
   }
 });
 
-const remove = asyncHandler(async (req, res) => {
+export const remove = asyncHandler(async (req, res) => {
   await req.recipe.destroy();
 
   res.json({
@@ -388,4 +388,3 @@ const remove = asyncHandler(async (req, res) => {
   });
 });
 
-export default { getAll, getById, create, update, remove };

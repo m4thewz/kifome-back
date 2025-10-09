@@ -1,7 +1,7 @@
 import { Comment, User, Recipe } from '../models/index.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
-const create = asyncHandler(async (req, res) => {
+export const create = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
   const { content } = req.body;
   const userId = req.user.id;
@@ -37,7 +37,7 @@ const create = asyncHandler(async (req, res) => {
   });
 });
 
-const getRecipeComments = asyncHandler(async (req, res) => {
+export const getRecipeComments = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 20;
@@ -79,7 +79,7 @@ const getRecipeComments = asyncHandler(async (req, res) => {
   });
 });
 
-const getById = asyncHandler(async (req, res) => {
+export const getById = asyncHandler(async (req, res) => {
   const comment = await Comment.findByPk(req.params.id, {
     include: [
       {
@@ -107,7 +107,7 @@ const getById = asyncHandler(async (req, res) => {
   });
 });
 
-const update = asyncHandler(async (req, res) => {
+export const update = asyncHandler(async (req, res) => {
   const { content } = req.body;
 
   await req.comment.update({ content }); // from checkCommentOwnership middleware
@@ -119,7 +119,7 @@ const update = asyncHandler(async (req, res) => {
   });
 });
 
-const remove = asyncHandler(async (req, res) => {
+export const remove = asyncHandler(async (req, res) => {
   await req.comment.destroy();
 
   res.json({
@@ -128,4 +128,3 @@ const remove = asyncHandler(async (req, res) => {
   });
 });
 
-export default { create, getRecipeComments, getById, update, remove };

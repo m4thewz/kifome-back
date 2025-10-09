@@ -2,7 +2,7 @@ import sequelize from '../database.js';
 import { Like, Recipe, Rating } from '../models/index.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
-const like = asyncHandler(async (req, res) => {
+export const like = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
   const userId = req.user.id;
 
@@ -39,7 +39,7 @@ const like = asyncHandler(async (req, res) => {
   });
 });
 
-const unlike = asyncHandler(async (req, res) => {
+export const unlike = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
   const userId = req.user.id;
 
@@ -70,7 +70,7 @@ const unlike = asyncHandler(async (req, res) => {
   });
 });
 
-const rate = asyncHandler(async (req, res) => {
+export const rate = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
   const { rating } = req.body;
   const userId = req.user.id;
@@ -114,7 +114,7 @@ const rate = asyncHandler(async (req, res) => {
   });
 });
 
-const getRating = asyncHandler(async (req, res) => {
+export const getRating = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
 
   const recipe = await Recipe.findByPk(recipeId);
@@ -146,4 +146,3 @@ const getRating = asyncHandler(async (req, res) => {
   });
 });
 
-export default { like, unlike, rate, getRating };
