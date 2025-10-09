@@ -34,7 +34,6 @@ export const like = asyncHandler(async (req, res) => {
     data: {
       recipeId: recipe.id,
       likes: recipe.likesCount + 1,
-      isLiked: true
     }
   });
 });
@@ -65,7 +64,6 @@ export const unlike = asyncHandler(async (req, res) => {
     data: {
       recipeId: recipe.id,
       likes: Math.max(0, recipe.likesCount - 1),
-      isLiked: false
     }
   });
 });

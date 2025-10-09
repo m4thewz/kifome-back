@@ -29,6 +29,7 @@ export const getUserRecipes = asyncHandler(async (req, res) => {
     where: { authorId: id },
     limit,
     offset,
+    distinct: true,
     order: [['createdAt', 'DESC']],
     include: [
       {
@@ -47,14 +48,12 @@ export const getUserRecipes = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    data: {
-      recipes,
-      pagination: {
-        page,
-        limit,
-        total: count,
-        pages: Math.ceil(count / limit)
-      }
+    data: recipes,
+    pagination: {
+      page,
+      limit,
+      total_items: count,
+      total_pages: Math.ceil(count / limit)
     }
   });
 });

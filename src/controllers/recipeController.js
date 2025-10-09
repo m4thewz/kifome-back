@@ -43,6 +43,7 @@ export const getAll = asyncHandler(async (req, res) => {
     offset,
     order,
     attributes: { exclude: ['authorId'] },
+    distinct: true,
     include: [
       {
         model: User,
@@ -72,14 +73,12 @@ export const getAll = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    data: {
-      recipes,
-      pagination: {
-        page,
-        limit,
-        total: count,
-        pages: Math.ceil(count / limit)
-      }
+    data: recipes,
+    pagination: {
+      page,
+      limit,
+      total_items: count,
+      total_pages: Math.ceil(count / limit)
     }
   });
 });

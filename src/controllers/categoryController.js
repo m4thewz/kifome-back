@@ -25,7 +25,7 @@ export const getAll = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    data: { categories }
+    data: categories
   });
 });
 
@@ -64,18 +64,16 @@ export const getById = asyncHandler(async (req, res) => {
     order: [['createdAt', 'DESC']],
     distinct: true
   });
+  category.recipes = recipes;
 
   res.json({
     success: true,
-    data: {
-      category,
-      recipes,
-      pagination: {
-        page,
-        limit,
-        total: count,
-        pages: Math.ceil(count / limit)
-      }
+    data: category,
+    pagination: {
+      page,
+      limit,
+      total_items: count,
+      total_pages: Math.ceil(count / limit)
     }
   });
 });

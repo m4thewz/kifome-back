@@ -56,6 +56,7 @@ export const getRecipeComments = asyncHandler(async (req, res) => {
     limit,
     offset,
     order: [['createdAt', 'DESC']],
+    distinct: true,
     include: [
       {
         model: User,
@@ -67,14 +68,12 @@ export const getRecipeComments = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    data: {
-      comments,
-      pagination: {
-        page,
-        limit,
-        total: count,
-        pages: Math.ceil(count / limit)
-      }
+    data: comments,
+    pagination: {
+      page,
+      limit,
+      total_items: count,
+      total_pages: Math.ceil(count / limit)
     }
   });
 });
