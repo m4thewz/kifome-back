@@ -4,7 +4,7 @@ const router = Router();
 import authRoutes from '../features/auth/auth.routes.js';
 import userRoutes from '../features/user/user.routes.js';
 import recipeRoutes from '../features/recipe/recipe.routes.js';
-import likeRoutes from '../features/feedback/feedback.routes.js'
+import likeRoutes from '../features/feedback/feedback.routes.js';
 import recipeCommentRoutes from '../features/comment/recipeComment.routes.js';
 import commentRoutes from '../features/comment/comment.routes.js';
 import categoryRoutes from '../features/category/category.routes.js';

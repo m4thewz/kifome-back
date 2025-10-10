@@ -1,17 +1,8 @@
-import { User, Recipe, Category } from '../../db/models.js';
 import asyncHandler from '../../utils/asyncHandler.js';
+import UserService from './user.service.js';
 
 export const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findByPk(req.params.id, {
-    attributes: ['id', 'name', 'username', 'bio', 'avatar', 'createdAt']
-  });
-
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      error: { message: 'User not found' }
-    });
-  }
+  const user = await UserService.getUserById(req.params.id);
 
   res.json({
     success: true,
@@ -20,31 +11,9 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 export const getUserRecipes = asyncHandler(async (req, res) => {
-  const { id } = req.params;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
-
-  const { count, rows: recipes } = await Recipe.findAndCountAll({
-    where: { authorId: id },
-    limit,
-    offset,
-    distinct: true,
-    order: [['createdAt', 'DESC']],
-    include: [
-      {
-        model: User,
-        as: 'author',
-        attributes: ['id', 'name', 'username', 'avatar']
-      },
-      {
-        model: Category,
-        as: 'categories',
-        attributes: ['name', 'displayName'],
-        through: { attributes: [] }
-      }
-    ]
-  });
+  const { recipes, count } = await UserService.getUserRecipes(req.params.id, page, limit);
 
   res.json({
     success: true,
@@ -60,18 +29,12 @@ export const getUserRecipes = asyncHandler(async (req, res) => {
 
 export const updateProfile = asyncHandler(async (req, res) => {
   const { name, username, bio, avatar } = req.body;
-
-  await req.user.update({
-    ...(name !== undefined && { name }),
-    ...(username !== undefined && { username }),
-    ...(bio !== undefined && { bio }),
-    ...(avatar !== undefined && { avatar })
-  });
+  const user = await UserService.updateProfile(req.user.id, { name, username, bio, avatar });
 
   res.json({
     success: true,
     message: 'Updated user successfully',
-    data: req.user
+    data: user
   });
 });
 

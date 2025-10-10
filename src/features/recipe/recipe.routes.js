@@ -3,7 +3,7 @@ const router = Router();
 import * as recipeController from './recipe.controller.js';
 import { authenticate } from '../../middlewares/auth.js';
 import { checkRecipeOwnership } from '../../middlewares/authorization.js';
-import { validateRecipeCreate,validateId } from '../../middlewares/validation.js';
+import { validateRecipeCreate, validateId } from '../../middlewares/validation.js';
 
 // /api/recipes
 router.get('/', recipeController.getAll);

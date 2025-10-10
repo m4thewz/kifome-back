@@ -1,70 +1,23 @@
-import { Comment, User, Recipe } from '../../db/models.js';
 import asyncHandler from '../../utils/asyncHandler.js';
+import CommentService from './comment.service.js';
 
 export const create = asyncHandler(async (req, res) => {
-  const { id: recipeId } = req.params;
   const { content } = req.body;
-  const userId = req.user.id;
+  const { id: recipeId } = req.params;
 
-  const recipe = await Recipe.findByPk(recipeId);
-  if (!recipe) {
-    return res.status(404).json({
-      success: false,
-      error: { message: 'Recipe not found' }
-    });
-  }
-
-  const comment = await Comment.create({
-    content,
-    userId,
-    recipeId
-  });
-
-  const commentWithAuthor = await Comment.findByPk(comment.id, {
-    include: [
-      {
-        model: User,
-        as: 'author',
-        attributes: ['id', 'name', 'username', 'avatar']
-      }
-    ]
-  });
+  const comment = await CommentService.createComment(content, recipeId, req.user.id);
 
   res.status(201).json({
     success: true,
     message: 'Created comment successfully',
-    data: commentWithAuthor
+    data: comment
   });
 });
 
 export const getRecipeComments = asyncHandler(async (req, res) => {
-  const { id: recipeId } = req.params;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 20;
-  const offset = (page - 1) * limit;
-
-  const recipe = await Recipe.findByPk(recipeId);
-  if (!recipe) {
-    return res.status(404).json({
-      success: false,
-      error: { message: 'Recipe not found' }
-    });
-  }
-
-  const { count, rows: comments } = await Comment.findAndCountAll({
-    where: { recipeId },
-    limit,
-    offset,
-    order: [['createdAt', 'DESC']],
-    distinct: true,
-    include: [
-      {
-        model: User,
-        as: 'author',
-        attributes: ['id', 'name', 'username', 'avatar']
-      }
-    ]
-  });
+  const { comments, count } = await CommentService.getRecipeComments(req.params.id, page, limit);
 
   res.json({
     success: true,
@@ -79,27 +32,7 @@ export const getRecipeComments = asyncHandler(async (req, res) => {
 });
 
 export const getById = asyncHandler(async (req, res) => {
-  const comment = await Comment.findByPk(req.params.id, {
-    include: [
-      {
-        model: User,
-        as: 'author',
-        attributes: ['id', 'name', 'username', 'avatar']
-      },
-      {
-        model: Recipe,
-        as: 'recipe',
-        attributes: ['id', 'title']
-      }
-    ]
-  });
-
-  if (!comment) {
-    return res.status(404).json({
-      success: false,
-      error: { message: 'Comment not found' }
-    });
-  }
+  const comment = await CommentService.getCommentById(req.params.id);
 
   res.json({
     success: true,
