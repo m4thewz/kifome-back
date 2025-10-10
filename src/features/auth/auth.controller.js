@@ -1,20 +1,11 @@
 import { User } from '../../db/models.js';
 import generateToken from '../../utils/generateToken.js';
 import asyncHandler from '../../utils/asyncHandler.js';
+import AuthService from './auth.service.js';
 
 export const register = asyncHandler(async (req, res) => {
   const { name, username, bio, avatar, email, password } = req.body;
-
-  const user = await User.create({
-    name,
-    username,
-    bio,
-    email,
-    avatar,
-    password
-  });
-
-  const token = generateToken(user.id);
+  const { user, token } = await AuthService.register({ name, username, bio, avatar, email, password })
 
   res.status(201).json({
     success: true,
