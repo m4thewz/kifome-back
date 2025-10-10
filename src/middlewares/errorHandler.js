@@ -1,5 +1,12 @@
+import AppError from '../utils/AppError.js';
+
 const errorHandler = (err, req, res, next) => {
-  console.error('❌ Error:', err);
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      success: false,
+      error: { message: err.message }
+    });
+  }
 
   if (err instanceof SyntaxError && err.status == 400) {
     return res.status(400).json({
@@ -56,6 +63,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // default error
+  console.error('❌ Error:', err);
   const statusCode = err.statusCode || 500;
   const message = process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message;
 

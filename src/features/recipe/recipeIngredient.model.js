@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../database.js';
+import sequelize from '../../db/index.js';
 
 const RecipeIngredient = sequelize.define(
   'RecipeIngredient',

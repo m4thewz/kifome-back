@@ -1,9 +1,9 @@
 import { Router } from 'express';
 const router = Router();
-import * as commentController from '../controllers/commentController.js';
-import { authenticate } from '../middlewares/auth.js';
-import { checkCommentOwnership } from '../middlewares/authorization.js';
-import { validateComment, validateId } from '../middlewares/validation.js';
+import * as commentController from './comment.controller.js';
+import { authenticate } from '../../middlewares/auth.js';
+import { checkCommentOwnership } from '../../middlewares/authorization.js';
+import { validateComment, validateId } from '../../middlewares/validation.js';
 
 // GET /api/comments/
 router.get('/:id', validateId, commentController.getById);

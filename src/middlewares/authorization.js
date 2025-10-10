@@ -1,4 +1,4 @@
-import { Recipe, Comment } from '../models/index.js';
+import { Recipe, Comment } from '../db/models.js';
 
 export const checkRecipeOwnership = async (req, res, next) => {
   try {
@@ -14,7 +14,7 @@ export const checkRecipeOwnership = async (req, res, next) => {
     if (recipe.authorId != req.user.id) {
       return res.status(403).json({
         success: false,
-        error: { message: 'You don\'t have permission to modify this recipe' }
+        error: { message: "You don't have permission to modify this recipe" }
       });
     }
 
