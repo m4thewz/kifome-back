@@ -65,16 +65,8 @@ class FeedbackService {
 
     const totalRatings = await Rating.count({ where: { recipeId } });
     const averageRating = parseFloat(recipe.averageRating) || 0;
-    const distribution = {};
 
-    for (let i = 1; i <= 5; i++) {
-      const count = await Rating.count({
-        where: { recipeId, rating: i }
-      });
-      distribution[i] = count;
-    }
-
-    return { totalRatings, averageRating, distribution };
+    return { totalRatings, averageRating };
   }
 }
 

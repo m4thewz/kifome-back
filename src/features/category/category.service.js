@@ -51,7 +51,7 @@ class CategoryService {
         {
           model: User,
           as: 'author',
-          attributes: ['id', 'name', 'username', 'avatar']
+          attributes: ['name', 'username', 'avatar']
         }
       ]
     });

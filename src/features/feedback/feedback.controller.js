@@ -37,17 +37,14 @@ export const rate = asyncHandler(async (req, res) => {
 });
 
 export const getRating = asyncHandler(async (req, res) => {
-  const { totalRatings, averageRating, distribution } = await FeedbackService.getRecipeRating(
-    req.params.id
-  );
+  const { totalRatings, averageRating } = await FeedbackService.getRecipeRating(req.params.id);
 
   res.json({
     success: true,
     data: {
       recipeId: Number(req.params.id),
       totalRatings,
-      averageRating: averageRating,
-      ratingDistribution: distribution
+      averageRating: averageRating
     }
   });
 });

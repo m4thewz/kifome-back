@@ -14,7 +14,7 @@ class CommentService {
         {
           model: User,
           as: 'author',
-          attributes: ['id', 'name', 'username', 'avatar']
+          attributes: ['name', 'username', 'avatar']
         }
       ]
     });
@@ -28,7 +28,7 @@ class CommentService {
         {
           model: User,
           as: 'author',
-          attributes: ['id', 'name', 'username', 'avatar']
+          attributes: ['name', 'username', 'avatar']
         }
       ]
     });
@@ -41,7 +41,6 @@ class CommentService {
 
   static async getRecipeComments(recipeId, page, limit) {
     const offset = (page - 1) * limit;
-
     const recipe = await Recipe.findByPk(recipeId);
     if (!recipe) {
       throw new AppError('Recipe not found', 404);
@@ -57,7 +56,7 @@ class CommentService {
         {
           model: User,
           as: 'author',
-          attributes: ['id', 'name', 'username', 'avatar']
+          attributes: ['name', 'username', 'avatar']
         }
       ]
     });

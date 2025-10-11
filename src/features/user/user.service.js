@@ -4,7 +4,6 @@ import { User, Recipe, Category } from '../../db/models.js';
 class UserService {
   static async getUserById(id) {
     const user = await User.findByPk(id);
-
     if (!user) {
       throw new AppError('User not found', 404);
     }
@@ -21,11 +20,6 @@ class UserService {
       distinct: true,
       order: [['createdAt', 'DESC']],
       include: [
-        {
-          model: User,
-          as: 'author',
-          attributes: ['id', 'name', 'username', 'avatar']
-        },
         {
           model: Category,
           as: 'categories',

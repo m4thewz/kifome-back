@@ -7,8 +7,7 @@ import {
   Category,
   RecipeIngredient,
   RecipeCategory,
-  User,
-  Comment
+  User
 } from '../../db/models.js';
 import normalizeText from '../../utils/normalizeText.js';
 
@@ -43,24 +42,12 @@ class RecipeService {
         {
           model: User,
           as: 'author',
-          attributes: ['id', 'name', 'username', 'avatar']
-        },
-        {
-          model: Ingredient,
-          as: 'ingredients',
-          through: { attributes: ['quantity', 'unit'] },
-          attributes: ['name', 'displayName']
+          attributes: ['name']
         },
         {
           model: Category,
           as: 'categories',
           attributes: ['name', 'displayName'],
-          through: { attributes: [] }
-        },
-        {
-          model: User,
-          as: 'likedBy',
-          attributes: ['id', 'username'],
           through: { attributes: [] }
         }
       ]
@@ -75,38 +62,18 @@ class RecipeService {
         {
           model: User,
           as: 'author',
-          attributes: ['id', 'name', 'username', 'avatar']
+          attributes: ['name', 'username', 'avatar']
         },
         {
           model: Ingredient,
           as: 'ingredients',
           through: { attributes: ['quantity', 'unit'] },
-          attributes: ['id', 'name', 'displayName']
+          attributes: ['name', 'displayName']
         },
         {
           model: Category,
           as: 'categories',
-          attributes: ['id', 'name', 'displayName'],
-          through: { attributes: [] }
-        },
-        {
-          model: Comment,
-          as: 'comments',
-          attributes: ['id', 'content', 'createdAt'],
-          include: [
-            {
-              model: User,
-              as: 'author',
-              attributes: ['id', 'username', 'avatar']
-            }
-          ],
-          limit: 5, // last 5 comments
-          order: [['createdAt', 'DESC']]
-        },
-        {
-          model: User,
-          as: 'likedBy',
-          attributes: ['id', 'username'],
+          attributes: ['name', 'displayName'],
           through: { attributes: [] }
         }
       ]
@@ -271,23 +238,7 @@ class RecipeService {
       }
 
       await t.commit();
-
-      const updatedRecipe = await Recipe.findByPk(recipe.id, {
-        include: [
-          {
-            model: Ingredient,
-            as: 'ingredients',
-            through: { attributes: ['quantity', 'unit'] }
-          },
-          {
-            model: Category,
-            as: 'categories',
-            attributes: ['name', 'displayName']
-          }
-        ]
-      });
-
-      return updatedRecipe;
+      return recipe;
     } catch (error) {
       await t.rollback();
       throw error;
