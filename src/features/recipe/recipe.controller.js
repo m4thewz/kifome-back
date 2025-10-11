@@ -26,9 +26,17 @@ export const getAll = asyncHandler(async (req, res) => {
 
 export const getById = asyncHandler(async (req, res) => {
   const recipe = await RecipeService.getRecipeById(req.params.id);
+  let recipeJson = recipe.toJSON();
+  recipeJson.ingredients = recipeJson.ingredients.map(ing => ({
+    name: ing.name,
+    displayName: ing.displayName,
+    quantity: Number(ing.RecipeIngredient.quantity),
+    unit: ing.RecipeIngredient.unit
+  }));
+
   res.json({
     success: true,
-    data: recipe
+    data: recipeJson
   });
 });
 
