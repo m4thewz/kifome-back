@@ -5,6 +5,7 @@ import { authenticate } from '../../middlewares/auth.js';
 import { validateRating, validateId } from '../../middlewares/validation.js';
 
 // /api/recipes
+router.get('/:id/like', authenticate, validateId, feedbackController.getLike);
 router.post('/:id/like', authenticate, validateId, feedbackController.like);
 router.post('/:id/rate', authenticate, validateId, validateRating, feedbackController.rate);
 router.get('/:id/rating', validateId, feedbackController.getRating);

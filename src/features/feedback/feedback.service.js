@@ -3,6 +3,11 @@ import { Like, Recipe, Rating } from '../../db/models.js';
 import AppError from '../../utils/AppError.js';
 
 class FeedbackService {
+  static async getLike(userId, recipeId) {
+    const like = await Like.findOne({ where: { userId, recipeId } });
+    return like;
+  }
+
   static async likeRecipe(userId, recipeId) {
     const recipe = await Recipe.findByPk(recipeId);
     if (!recipe) {

@@ -1,6 +1,18 @@
 import asyncHandler from '../../utils/asyncHandler.js';
 import FeedbackService from './feedback.service.js';
 
+export const getLike = asyncHandler(async (req, res) => {
+  const { id: recipeId } = req.params;
+  const like = await FeedbackService.getLike(req.user.id, recipeId);
+
+  res.json({
+    success: true,
+    data: {
+      liked: Boolean(like)
+    }
+  });
+});
+
 export const like = asyncHandler(async (req, res) => {
   const { id: recipeId } = req.params;
   const { liked, likesCount } = await FeedbackService.likeRecipe(req.user.id, recipeId);

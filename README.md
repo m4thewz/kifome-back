@@ -82,7 +82,7 @@ API will run at `http://localhost:3000`
 | **PUT**    | `/api/recipes/:id`          | Update a recipe (owner only)  |
 | **DELETE** | `/api/recipes/:id`          | Delete a recipe (owner only)  |
 | **POST**   | `/api/recipes/:id/like`     | Like a recipe                 |
-| **DELETE** | `/api/recipes/:id/like`     | Unlike a recipe               |
+| **GET**    | `/api/recipes/:id/like`     | Get a like                    |
 | **POST**   | `/api/recipes/:id/rate`     | Rate a recipe                 |
 | **GET**    | `/api/recipes/:id/rating`   | Get recipe rating             |
 | **GET**    | `/api/recipes/:id/comments` | Get all comments for a recipe |
