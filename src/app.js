@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import sequelize from './db/index.js';
-import routes from './routes/index.js';
+import routes from './routes.js';
 
 import { helmet, cors } from './middlewares/security.js';
 import { errorHandler, notFound } from './middlewares/errorHandler.js';
