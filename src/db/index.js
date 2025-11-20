@@ -8,7 +8,7 @@ const DATABASE = {
 };
 
 const sequelize = new Sequelize(DATABASE.name, DATABASE.user, DATABASE.password, {
-  dialect: 'mysql',
+  dialect: 'postgres',
   host: DATABASE.host,
   logging: false
 });
