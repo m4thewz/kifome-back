@@ -43,6 +43,7 @@ export const getById = asyncHandler(async (req, res) => {
 export const create = asyncHandler(async (req, res) => {
   const {
     title,
+    image,
     description,
     preparation,
     portionQuantity,
@@ -55,6 +56,7 @@ export const create = asyncHandler(async (req, res) => {
   const recipe = await RecipeService.createRecipe(
     {
       title,
+      image,
       description,
       preparation,
       portionQuantity,
@@ -77,6 +79,7 @@ export const create = asyncHandler(async (req, res) => {
 export const update = asyncHandler(async (req, res) => {
   const {
     title,
+    image,
     description,
     preparation,
     portionQuantity,
@@ -91,6 +94,7 @@ export const update = asyncHandler(async (req, res) => {
     req.params.id,
     {
       title,
+      image,
       description,
       preparation,
       portionQuantity,

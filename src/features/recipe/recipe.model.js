@@ -5,6 +5,7 @@ const Recipe = sequelize.define(
   'Recipe',
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    image: { type: DataTypes.STRING, allowNull: true },
     title: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: true },
     difficulty: {
