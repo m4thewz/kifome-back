@@ -17,7 +17,7 @@ class RecipeService {
     const whereClause = {};
 
     if (filters.search) {
-      whereClause.title = { [Op.like]: `%${filters.search}%` };
+      whereClause.title = { [Op.iLike]: `%${filters.search}%` };
     }
 
     if (filters.difficulty) {

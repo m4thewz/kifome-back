@@ -7,7 +7,7 @@ engage through comments and likes, and rate recipes from other users.
 
 - Node.js
 - Express.js
-- MySQL
+- PostgreSQL
 - JWT
 
 ## Getting Started
@@ -16,7 +16,7 @@ engage through comments and likes, and rate recipes from other users.
 
 - Node.js
 - npm or yarn
-- MySQL
+- PostgreSQL
 
 ### Installation
 
