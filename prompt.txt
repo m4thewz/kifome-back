@@ -1,0 +1,77 @@
+Quero que você gere um código em Node.js para preencher meu banco de dados com vários dados iniciais. O projeto é um site de receitas e utiliza services para criar registros no banco, ou seja, para inserir qualquer dado basta chamar o service correspondente passando um JSON com os atributos necessários. Não posso usar seeders nem rodar comandos no terminal, então o código deve ser executado apenas uma vez e depois removido. As tabelas do sistema incluem usuário, receita, categoria, comentário, like e ingrediente, e é importante considerar que para criar uma receita é necessário já existir um usuário autor, portanto o código precisa respeitar a ordem correta de criação dos dados e armazenar os IDs retornados quando necessário. Com os services e os atributos exigidos por cada um, gere um arquivo completo em Node.js contendo uma função principal que chama os services e cria vários registros reais de exemplo para cada tabela, exibindo logs durante o processo, evitando duplicações caso seja executado acidentalmente e tratando erros de forma simples. No final, entregue somente o código completo dentro de um bloco js e use apenas as informações que eu enviar sobre os services, sem pedir dados adicionais.
+
+User:
+method: AuthService.register(data)
+example data: {
+      "name": "Mathias",
+      "email": "mathias@games.com",
+      "bio": "formado em overcooked",
+      "password": "wake1234",
+      "username": "mathias"
+};
+return { user, token };
+
+Recipe:
+# nota: Na receita vc ja passa as categorias e os ingredientes, ele cria automaticamente essas tabelas
+method: RecipeService.createRecipe(data, ingredients, categories)
+example data: {
+      "title": "Bolo de Chocolate Fofinho",
+      "description": "Um delicioso bolo de chocolate super fofinho e úmido",
+      "preparation": "Pré-aqueça o forno a 180°C. Unte uma forma com manteiga e farinha. Misture todos os ingredientes secos. Adicione os líquidos e misture até obter uma massa homogênea. Despeje na forma e asse por 40 minutos.",
+      "portionQuantity": 8,
+      "portionUnit": "slice",
+      "prepTime": 20,
+      "cookTime": 40,
+      "authorId": 1
+}
+example ingredients: [
+        {
+          "name": "Farinha de trigo",
+          "quantity": "2",
+          "unit": "cup"
+        },
+        {
+          "name": "Açúcar",
+          "quantity": "1.5",
+          "unit": "cup"
+        },
+        {
+          "name": "Chocolate em pó",
+          "quantity": "1",
+          "unit": "cup"
+        },
+        {
+          "name": "Ovos",
+          "quantity": "3",
+          "unit": "unit"
+        },
+        {
+          "name": "Leite",
+          "quantity": "1",
+          "unit": "cup"
+        }
+      ],
+example categories: [
+        "Sobremesas",
+        "Bolos"
+      ]
+return recipe;
+
+Comment:
+method: CommentService.createComment(content, recipeId, userId)
+example content: "Amei"
+example recipeId: 1
+example userId: 2
+return comment
+
+Like:
+method: FeedbackService.likeRecipe(userId, recipeId)
+example userId: 2
+example recipeId: 1
+
+Rating:
+# nota: rating tem que ser um inteiro de 1 a 5
+method: FeedbackService.rateRecipe(rating, userId, recipeId)
+example rating: 3
+example userId: 2
+example recipeId: 1

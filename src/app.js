@@ -5,6 +5,7 @@ import routes from './routes.js';
 
 import { helmet, cors } from './middlewares/security.js';
 import { errorHandler, notFound } from './middlewares/errorHandler.js';
+import seedDatabase from './seedDatabase.js';
 
 const app = express();
 
@@ -28,5 +29,16 @@ app.get('/health', (_, res) => {
 
 app.use(notFound);
 app.use(errorHandler);
+
+seedDatabase()
+  .then(() => {
+    console.log('🎉 Processo finalizado!');
+    process.exit(0);
+  })
+  .catch((error) => {
+    console.error('💥 Erro fatal:', error);
+    process.exit(1);
+  });
+
 
 export default app;
