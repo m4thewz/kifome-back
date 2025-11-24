@@ -30,15 +30,15 @@ app.get('/health', (_, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-seedDatabase()
-  .then(() => {
-    console.log('🎉 Processo finalizado!');
-    process.exit(0);
-  })
-  .catch((error) => {
-    console.error('💥 Erro fatal:', error);
-    process.exit(1);
-  });
+// seedDatabase()
+//   .then(() => {
+//     console.log('🎉 Processo finalizado!');
+//     process.exit(0);
+//   })
+//   .catch((error) => {
+//     console.error('💥 Erro fatal:', error);
+//     process.exit(1);
+//   });
 
 
 export default app;
